@@ -18,7 +18,7 @@ type Result struct {
 	Answer_Count int `json:"answer_count"`
 	Plan_Name string `json:"plan_name"`
 	Day []string `json:"day"`
-	Genle []string `json:"genle"`
+	Genre []string `json:"genre"`
 	Area []string `json:"area"`
 	Free []string `json:"free"`
 }
@@ -116,15 +116,15 @@ func Plan_Result( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc 
 		err = json.Unmarshal( json_byte, &answer_stoarge )
 
 		day_score := map[string]int{}
-		genle_score := map[string]int{}
+		genre_score := map[string]int{}
 		area_score := map[string]int{}
 		
 		for i := 0; i < len( plan_data.Area ); i++ {
 			area_score[ plan_data.Area[i] ] = 0
 		}
 
-		for i := 0; i < len( plan_data.Genle ); i++ {
-			genle_score[ plan_data.Area[i] ] = 0
+		for i := 0; i < len( plan_data.Genre ); i++ {
+			genre_score[ plan_data.Area[i] ] = 0
 		}
 
 		for i := 0; i < len( plan_data.Day ); i++ {
@@ -135,7 +135,7 @@ func Plan_Result( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc 
 
 		for i := 0; i < len( answer_stoarge ); i++ {
 			area_score[ answer_stoarge[i].Area ] += 1
-			genle_score[ answer_stoarge[i].Genre ] += 1
+			genre_score[ answer_stoarge[i].Genre ] += 1
 
 			for r := 0; r < len( answer_stoarge[i].Day ); r++ {
 				day_score[ answer_stoarge[i].Day[r].Day ] += answer_stoarge[i].Day[r].Check
@@ -158,18 +158,18 @@ func Plan_Result( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc 
 
 		sort.Sort( area )
 
-		genle := ByAge{}
-		for k, v := range genle_score {
-			genle = append( genle, Result_Sort{ k, v } )
+		genre := ByAge{}
+		for k, v := range genre_score {
+			genre = append( genre, Result_Sort{ k, v } )
 		}
 
-		sort.Sort( genle )
+		sort.Sort( genre )
 
 		res_result.Area = append( res_result.Area, area[0].Data )
 		res_result.Area = append( res_result.Area, area[1].Data )
 
-		res_result.Genle = append( res_result.Genle, genle[0].Data )
-		res_result.Genle = append( res_result.Genle, genle[1].Data )
+		res_result.Genre = append( res_result.Genre, genre[0].Data )
+		res_result.Genre = append( res_result.Genre, genre[1].Data )
 
 		res_result.Day = append( res_result.Day, day[0].Data )
 		res_result.Day = append( res_result.Day, day[0].Data )

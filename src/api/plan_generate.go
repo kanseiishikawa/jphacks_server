@@ -18,7 +18,7 @@ type Plan struct {
 	Plan_Name string `json:"plan_name"`
 	Memo string `json:"memo"`
 	Day [] string `json:"day"`
-	Genle [] string `json:"genle"`
+	Genre [] string `json:"genre"`
 	Area [] string `json:"area"`
 }
 
