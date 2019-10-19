@@ -26,7 +26,7 @@ func Plan_Answer( sess *dbr.Session, key string ) ( int , error ) {
 
 func Plan_Answer_Update( db *dbr.Connection, key string, count int) error {
 
-	err := sess.Exec( `UPDATE plan_data SET answer_count = $1 WHERE key = $2`,
+	err := db.Exec( `UPDATE plan_data SET answer_count = $1 WHERE key = $2`,
 		count,
 		key,)
 
