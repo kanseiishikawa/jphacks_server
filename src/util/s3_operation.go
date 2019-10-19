@@ -13,26 +13,15 @@ import (
 )
 
 
-func MasterFileUpload( id string, name string ) error {
+func PlanFileUpload( file *os.File, uploadname string ) error {
 	sess, err := S3Connect()
 
 	if err != nil {
 		return err
 	}
 	
-	filename := "../data_file/caremanual_master.json"
-	uploadname := id + ":"
-	uploadname += name
-	uploadname += ".json"
-	bucketname := "caremanualmaster"
+	bucketname := "jphacksstorage"
 	
-	file, err := os.Open( filename )
-	defer file.Close()
-	
-	if err != nil {
-		return err
-	}
-
 	uploader := s3manager.NewUploader( sess )
 	_, err = uploader.Upload( &s3manager.UploadInput {
 		Bucket: aws.String( bucketname ),
@@ -126,7 +115,7 @@ func S3Connect() ( *session.Session, error ) {
 	
 	sess, err := session.NewSession(&aws.Config{
 		Credentials: creds,
-		Region: aws.String("us-east-1")},
+		Region: aws.String("us-east-2")},
 	)
 
 	if err != nil {

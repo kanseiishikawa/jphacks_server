@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"time"
 	"fmt"
+	"os"
 )
 
 type Plan struct {
@@ -80,6 +81,18 @@ func Plan_Generate( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFun
 
 		plan_key := key_generate()
 
+		file_name := plan_key + ".json"
+
+		var file *os.File
+		file.WriteString( plan_data )
+		err = util.PlanFileUpload( file, file_name )
+
+		if err != nil {
+			logger.Write_log( "fail s3upload " + req.RemoteAddr, 1 )
+			fmt.Fprintf( w, "false" )
+			return			
+		}
+		
 		err = database.Plan_Generate( user_id, plan_key, db.Conn )
 
 		if err != nil {
