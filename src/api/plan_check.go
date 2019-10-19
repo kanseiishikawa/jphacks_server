@@ -14,8 +14,9 @@ import (
 )
 
 type Plan_Data struct {
-	Name string `json:name`
-	Key string `json:key`
+	Name string `json:"name"`
+	Memo string `json:"memo"`
+	Key string `json:"key"`
 }
 
 /*
@@ -97,7 +98,8 @@ func Plan_Check( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc {
 			//fmt.Println( instance )
 			check.Key = key_list[i]
 			check.Name = instance.Plan_Name
-
+			check.Memo = instance.Memo
+			
 			name_key_list = append( name_key_list, check )
 		}
 
