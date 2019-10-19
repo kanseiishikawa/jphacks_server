@@ -19,7 +19,7 @@ type Plan struct {
 	Memo string `json:"memo"`
 	Day [] string `json:"day"`
 	Genle [] string `json:"genle"`
-	Aenle [] string `json:"area"`
+	Area [] string `json:"area"`
 }
 
 func Plan_Generate( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc {

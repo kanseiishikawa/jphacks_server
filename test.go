@@ -1,48 +1,48 @@
 package main
 
 import (
+	"os"
+    "io/ioutil"
 	"encoding/json"
-	"bytes"
+	//"bytes"
 	"fmt"
 )
 
-type Plan struct {
-	Plan_Name string `json:"plan_name"`
-	Memo string `json:"memo"`
-	Day [] string `json:"day"`
+type Form_Day struct {
+	Day string `json:"day"`
+	Check int `json:check`
 }
 
+type Form struct {
+	Area string `json:"area"`
+	Genre string `json:"genre"`
+	Free string `json:"free"`
+	Day []Form_Day `json:"select_day"`
+}
 
 func main() {
-	test_plan := Plan{}
+	var form_storage []Form
+	file_name := "form_read.json" 
 
-	test_plan.Plan_Name = "飲み会"
-	test_plan.Memo = "いっぱい飲むぞ"
-	test_plan.Day = append( test_plan.Day, "2019:10/5" )
-	test_plan.Day = append( test_plan.Day, "2019:10/7" )
-	test_plan.Day = append( test_plan.Day, "2019:10/9" )
-
-	jsonBytes, err := json.Marshal( test_plan )
-	
-    if err != nil {
-		fmt.Println( "1" )
-        fmt.Println( err )
-        return
-    }
-
-	var buf bytes.Buffer
-	
-	err = json.Indent( &buf, jsonBytes, "", "  " )
-
-	new_plan := new( Plan )
-	err = json.Unmarshal( []byte( buf.String() ), new_plan )
+	file, err := os.Open( file_name )
 
 	if err != nil {
-		fmt.Println( "2" )
-        fmt.Println( err )
-        return
-    }
+		fmt.Println( err )
+		return
+	}
 
-	fmt.Println( new_plan )
+	defer file.Close()
+
+	// 一気に全部読み取り
+    b, err := ioutil.ReadAll( file )
+
+	err = json.Unmarshal( b, &form_storage )
+
+	if err != nil {
+		fmt.Println( err )
+		return
+	}
+
+	fmt.Println( "succes" )
 }
 
