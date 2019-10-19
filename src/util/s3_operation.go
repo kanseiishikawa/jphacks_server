@@ -13,7 +13,7 @@ import (
 )
 
 
-func PlanFileUpload( uploadname string ) error {
+func FileUpload( uploadname string ) error {
 	sess, err := S3Connect()
 
 	if err != nil {

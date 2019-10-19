@@ -30,7 +30,7 @@ func Plan_Generate( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFun
 			return
 		}
 
-				//アクセストークンによる認証
+		//アクセストークンによる認証
 		err := database.HttpRequestAuth( req, w, keys, conf )
 		
 		if err != nil {
@@ -41,7 +41,6 @@ func Plan_Generate( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFun
 
 		plan_data := req.FormValue( "plan_data" )
 		account := req.FormValue( "account" )
-		password := req.FormValue( "password" )
 
 		if len( plan_data ) == 0 {
 			logger.Write_log( "not set plan " + req.RemoteAddr, 1 )
@@ -51,12 +50,6 @@ func Plan_Generate( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFun
 
 		if len( account ) == 0 {
 			logger.Write_log( "not set account " + req.RemoteAddr, 1 )
-			fmt.Fprintf( w, "false" )
-			return
-		}
-
-		if len( password ) == 0 {
-			logger.Write_log( "not set password " + req.RemoteAddr, 1 )
 			fmt.Fprintf( w, "false" )
 			return
 		}
@@ -80,7 +73,7 @@ func Plan_Generate( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFun
 			return
 		}
 
-		user_id, err := database.Account_ID( db.Sess, account, password )
+		user_id, err := database.Account_ID( db.Sess, account )
 
 		if err != nil {
 			logger.Write_log( "fail get ID " + req.RemoteAddr, 1 )
@@ -95,7 +88,7 @@ func Plan_Generate( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFun
 		file, _ := os.OpenFile("send.json", os.O_WRONLY|os.O_CREATE, 0666)
 		fmt.Fprintln( file, plan_data )
 		defer file.Close()
-		err = util.PlanFileUpload( file_name )
+		err = util.FileUpload( file_name )
 
 		if err != nil {
 			logger.Write_log( "fail s3upload " + req.RemoteAddr, 1 )
@@ -104,7 +97,7 @@ func Plan_Generate( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFun
 			return			
 		}
 		
-		err = database.Plan_Generate( user_id, plan_key, db.Conn )
+		err = database.Plan_Insert( user_id, plan_key, db.Conn )
 
 		if err != nil {
 			logger.Write_log( "fail database insert " + req.RemoteAddr, 1 )
