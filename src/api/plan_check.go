@@ -42,6 +42,16 @@ func Plan_Check( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc {
 			util.CORSforOptions( &w )
 			return
 		}
+
+		//アクセストークンによる認証
+		err := database.HttpRequestAuth( req, w, keys, conf )
+		
+		if err != nil {
+			logger.Write_log( "access_token check fail", 1 )
+			fmt.Fprintf( w, "ログインに失敗しました\n" )
+			return
+		}
+
 		
 		account := req.FormValue( "account" )
 
