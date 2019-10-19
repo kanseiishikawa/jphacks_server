@@ -14,8 +14,8 @@ import (
 )
 
 type Plan_Data struct {
-	name string `json:name`
-	key string `json:key`
+	Name string `json:name`
+	Key string `json:key`
 }
 
 /*
@@ -69,7 +69,7 @@ func Plan_Check( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc {
 		}
 
 		key_list, err := database.Plan_Key( db.Sess, user_id )
-		fmt.Println( key_list )
+		//fmt.Println( key_list )
 		var name_key_list []Plan_Data
 		check := Plan_Data{}
 		
@@ -94,14 +94,14 @@ func Plan_Check( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc {
 				return
 			}
 
-			fmt.Println( instance )
-			check.key = key_list[i]
-			check.name = instance.Plan_Name
+			//fmt.Println( instance )
+			check.Key = key_list[i]
+			check.Name = instance.Plan_Name
 
 			name_key_list = append( name_key_list, check )
 		}
 
-		fmt.Println( name_key_list )
+		//fmt.Println( name_key_list )
 
 		res_bytes, err := json.Marshal( name_key_list )
 
