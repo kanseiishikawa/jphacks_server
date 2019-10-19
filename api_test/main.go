@@ -8,7 +8,7 @@ import (
     "net/http"
     //"strings"
     "net/url"
-    // "reflect"
+    "reflect"
 )
 
 const (
@@ -33,6 +33,7 @@ func main() {
     values.Add("keyid", CONSUMER_KEY)
     fmt.Println(values.Encode())
     resp, err := http.Get(URL + "?" + values.Encode())
+    fmt.Println(reflect.TypeOf(resp))
 
     if err != nil {
         fmt.Println(err)
