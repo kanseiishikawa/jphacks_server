@@ -26,6 +26,8 @@ func main() {
 	http.HandleFunc( "/app/v0/plan_check", api.Plan_Check( config_data, keys ) )
 	http.HandleFunc( "/app/v0/plan_list", api.Plan_List( config_data, keys ) )
 	http.HandleFunc( "/app/v0/plan_result", api.Plan_Result( config_data, keys ) )
+
+	http.HandleFunc( "/app/v0/store_search", api.Store_Search( config_data, keys ) )
 	
 	err = http.ListenAndServe( ":80", nil )
 
