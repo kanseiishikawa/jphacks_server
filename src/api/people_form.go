@@ -106,11 +106,11 @@ func Plan_Form( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc {
 				return			
 			}
 
-			err = json.Unmarshal( json_byte, form_storage )
+			err = json.Unmarshal( json_byte, &form_storage )
 			
 			if err != nil {
 				logger.Write_log( "fail json_storage change", 4 )
-				logger.Write_log( string( json_byte ), 4 )
+				//logger.Write_log( string( json_byte ), 4 )
 				logger.Write_log( err.Error(), 4 )
 				fmt.Fprintf( w, "false" )
 				return
