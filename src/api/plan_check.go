@@ -73,7 +73,7 @@ func Plan_Check( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc {
 		var name_key_list []Plan_Data
 
 		for i := 0; i < len( key_list ); i++ {
-			file_name := key_list[i] + "_form.json"
+			file_name := key_list[i] + ".json"
 			bytes, err := util.FileDownload( file_name )
 
 			if err != nil {
