@@ -21,7 +21,7 @@ type Plan_Data struct {
 
 func Plan_List( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc {
 	return func( w http.ResponseWriter, req *http.Request ) {		
-		logger.Write_log( "plan check start " + req.RemoteAddr, 1 )
+		logger.Write_log( "plan list start " + req.RemoteAddr, 1 )
 
 		if req.Method == "OPTIONS" {
 			logger.Write_log( "OPTIONS return", 1 )
@@ -121,7 +121,7 @@ func Plan_List( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc {
 
 		res, _ := json.Marshal( responseResult )
 
-		logger.Write_log( "plan check success" + req.RemoteAddr, 1 )
+		logger.Write_log( "plan list success" + req.RemoteAddr, 1 )
 		util.Respond( res, w )
 	}
 }

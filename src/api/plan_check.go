@@ -14,7 +14,7 @@ import (
 )
 
 func Plan_Check( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc {
-	return func( w http.ResponseWriter, req *http.Request ) {		
+	return func( w http.ResponseWriter, req *http.Request ) {
 		logger.Write_log( "plan check start " + req.RemoteAddr, 1 )
 
 		if req.Method == "OPTIONS" {

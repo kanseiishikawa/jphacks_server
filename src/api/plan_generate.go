@@ -18,6 +18,8 @@ type Plan struct {
 	Plan_Name string `json:"plan_name"`
 	Memo string `json:"memo"`
 	Day [] string `json:"day"`
+	Genle [] string `json:"genle"`
+	Aenle [] string `json:"area"`
 }
 
 func Plan_Generate( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc {
@@ -53,7 +55,7 @@ func Plan_Generate( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFun
 			fmt.Fprintf( w, "false" )
 			return
 		}
-
+		/*
 		new_plan := new( Plan )
 		err = json.Unmarshal( []byte( plan_data ), new_plan )
 
@@ -62,6 +64,7 @@ func Plan_Generate( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFun
 			fmt.Fprintf( w, "false" )
 			return			
 		}
+*/
 
 		db, err := database.Connect( conf.DB )
 		defer database.Disconnect( db )
@@ -85,7 +88,7 @@ func Plan_Generate( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFun
 
 		file_name := plan_key + ".json"
 
-		file, _ := os.OpenFile("send.json", os.O_WRONLY|os.O_CREATE, 0666)
+		file, _ := os.OpenFile("send.json", os.O_WRONLY|os.O_CREATE, 0666 )
 		fmt.Fprintln( file, plan_data )
 		defer file.Close()
 		err = util.FileUpload( file_name )
