@@ -71,6 +71,7 @@ func Plan_Check( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc {
 		key_list, err := database.Plan_Key( db.Sess, user_id )
 		fmt.Println( key_list )
 		var name_key_list []Plan_Data
+		check := Plan_Data{}
 		
 		for i := 0; i < len( key_list ); i++ {
 			file_name := key_list[i] + ".json"
@@ -83,7 +84,7 @@ func Plan_Check( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc {
 			}
 			
 			instance := Plan{}
-			fmt.Println( string( bytes ) )
+
 			err = json.Unmarshal( bytes, &instance )
 			
 			if err != nil {
@@ -93,12 +94,14 @@ func Plan_Check( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc {
 				return
 			}
 
-			check := Plan_Data{}
+			fmt.Println( instance )
 			check.key = key_list[i]
 			check.name = instance.Plan_Name
 
 			name_key_list = append( name_key_list, check )
 		}
+
+		fmt.Println( name_key_list )
 
 		res_bytes, err := json.Marshal( name_key_list )
 
