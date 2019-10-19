@@ -98,6 +98,7 @@ func Plan_Generate( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFun
 
 		if err != nil {
 			logger.Write_log( "fail s3upload " + req.RemoteAddr, 1 )
+			logger.Write_log( err.Error(), 1 )
 			fmt.Fprintf( w, "false" )
 			return			
 		}
