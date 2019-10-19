@@ -69,9 +69,9 @@ func Plan_Check( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc {
 		}
 
 		key_list, err := database.Plan_Key( db.Sess, user_id )
-
+		fmt.Println( key_list )
 		var name_key_list []Plan_Data
-
+		
 		for i := 0; i < len( key_list ); i++ {
 			file_name := key_list[i] + ".json"
 			bytes, err := util.FileDownload( file_name )
@@ -83,9 +83,9 @@ func Plan_Check( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc {
 			}
 			
 			instance := Plan{}
-
+			fmt.Println( string( bytes ) )
 			err = json.Unmarshal( bytes, &instance )
-
+			
 			if err != nil {
 				logger.Write_log( "fail json change", 4 )
 				logger.Write_log( err.Error(), 4 )
