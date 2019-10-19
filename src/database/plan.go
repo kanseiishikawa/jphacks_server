@@ -32,3 +32,28 @@ func Plan_Answer_Update( db *dbr.Connection, key string, count int) error {
 
 	return err
 }
+
+func Plan_Key( sess *dbr.Session, id int ) ( []string, error ) {
+
+	var list []string
+	
+	rows, err := sess.Query( `SELECT key FROM plan_data WHERE ID = $1`,
+		id, )
+
+	if err != nil {
+		return list, err
+	}
+
+	for rows.Next() {
+		var plan_key string
+		err = rows.Scan( &plan_key )
+
+		if err != nil {
+			return list, err
+		}
+
+		list = append( list , plan_key )
+	}
+
+	return list, nil
+}
