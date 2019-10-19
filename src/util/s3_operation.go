@@ -13,7 +13,7 @@ import (
 )
 
 
-func PlanFileUpload( uploadname string ) error {
+func FileUpload( uploadname string ) error {
 	sess, err := S3Connect()
 
 	if err != nil {
@@ -45,7 +45,7 @@ func PlanFileUpload( uploadname string ) error {
 	return nil
 }
 
-func MasterFileDownload( id string, name string ) ( []byte, error ) {
+func FileDownload( downloadname string ) ( []byte, error ) {
 	var jsonBytes []byte
 	sess, err := S3Connect()
 
@@ -53,11 +53,8 @@ func MasterFileDownload( id string, name string ) ( []byte, error ) {
 		return jsonBytes, err
 	}
 	
-	filename := "caremanual_download.json"
-	downloadname := id + ":"
-	downloadname += name
-	downloadname += ".json"
-	bucketname := "caremanualmaster"
+	filename := "send.json"
+	bucketname := "jphacksstorage"
 	
 	file, err := os.Create( filename )
 	defer file.Close()
@@ -86,37 +83,6 @@ func MasterFileDownload( id string, name string ) ( []byte, error ) {
 	}
 
 	return jsonBytes, nil
-}
-
-func Caremanual_upload( file_name string ) error {
-	sess, err := S3Connect()
-
-	if err != nil {
-		return err
-	}
-
-	bucketname := "caremanualeresult"
-	
-	file, err := os.Open( file_name )
-	defer file.Close()
-	
-	if err != nil {
-		return err
-	}
-
-	uploader := s3manager.NewUploader( sess )
-	_, err = uploader.Upload( &s3manager.UploadInput {
-		Bucket: aws.String( bucketname ),
-		Key: aws.String( file_name ),
-		Body: file,
-	})
-
-	if err != nil {
-		return err
-	}
-
-	return nil
-
 }
 
 func S3Connect() ( *session.Session, error ) {
