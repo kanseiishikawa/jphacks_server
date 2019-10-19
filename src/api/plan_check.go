@@ -75,6 +75,13 @@ func Plan_Check( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc {
 		for i := 0; i < len( key_list ); i++ {
 			file_name := key_list[i] + "_form.json"
 			bytes, err := util.FileDownload( file_name )
+
+			if err != nil {
+				logger.Write_log( "fail s3download", 1 )
+				logger.Write_log( err.Error(), 1 )
+				return
+			}
+			
 			instance := Plan{}
 
 			err = json.Unmarshal( bytes, &instance )
