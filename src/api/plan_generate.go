@@ -30,6 +30,15 @@ func Plan_Generate( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFun
 			return
 		}
 
+				//アクセストークンによる認証
+		err := database.HttpRequestAuth( req, w, keys, conf )
+		
+		if err != nil {
+			logger.Write_log( "access_token check fail", 1 )
+			fmt.Fprintf( w, "ログインに失敗しました\n" )
+			return
+		}
+
 		plan_data := req.FormValue( "plan_data" )
 		account := req.FormValue( "account" )
 		password := req.FormValue( "password" )
@@ -53,7 +62,7 @@ func Plan_Generate( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFun
 		}
 
 		new_plan := new( Plan )
-		err := json.Unmarshal( []byte( plan_data ), new_plan )
+		err = json.Unmarshal( []byte( plan_data ), new_plan )
 
 		if err != nil {
 			logger.Write_log( "fail change json " + req.RemoteAddr, 1 )
