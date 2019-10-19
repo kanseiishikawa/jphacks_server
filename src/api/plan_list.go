@@ -17,6 +17,7 @@ type Plan_Data struct {
 	Name string `json:"name"`
 	Memo string `json:"memo"`
 	Key string `json:"key"`
+	Count int `json:"count"`
 }
 
 func Plan_List( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc {
@@ -91,10 +92,20 @@ func Plan_List( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc {
 				return
 			}
 
+			answer_count, err := database.Plan_Answer( db.Sess, key_list[i] )
+
+			if err != nil {
+				logger.Write_log( "fail get answer", 4 )
+				logger.Write_log( err.Error(), 4 )
+				fmt.Fprintf( w, "false" )
+				return				
+			}
+			
 			//fmt.Println( instance )
 			check.Key = key_list[i]
 			check.Name = instance.Plan_Name
 			check.Memo = instance.Memo
+			check.Count = answer_count
 			
 			name_key_list = append( name_key_list, check )
 		}
