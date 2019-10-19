@@ -8,10 +8,20 @@ import (
 	"../jwt"
 	"encoding/json"
 	"net/http"
-	//"bytes"
+	"bytes"
 	"fmt"
 	//"os"
 )
+
+type Store_Data struct {
+	Store_Name string `json:"store_name"`
+	Category string `json:"category"`
+	URL string `json:"url"`
+	Store_Image string `json:"store_image"`
+	Rest_Day string `json:"rest_day"`
+	Area string `json:"area"`
+	Average_Money int `json:"average_money"`
+}
 
 func Store_Search( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc {
 	return func( w http.ResponseWriter, req *http.Request ) {
@@ -26,7 +36,7 @@ func Store_Search( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc
 		api_par := map[string]string{}
 
 		if len( req.FormValue( "freeword" ) ) != 0 {
-			api_par["freeword"] = req.FormValue( "free_word" )
+			api_par["freeword"] = req.FormValue( "freeword" )
 		} else {
 			api_par["freeword"] = "0"
 		}
@@ -98,11 +108,48 @@ func Store_Search( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc
 		if err != nil {
 			logger.Write_log( "fail tap api", 1 )
 			logger.Write_log( err.Error(), 1 )
+			fmt.Fprintf( w, "false")
 			return
 		}
 
-		bytes, err := json.Marshal( result )
-		fmt.Fprintf( w, string( bytes ) )
+		var res_store_data []Store_Data
+
+		for i := 0; i < len( result.Rest ); i++ {
+			instance := Store_Data{}
+			instance.Store_Name = result.Rest[i].Name
+			instance.Category = result.Rest[i].Category
+			instance.URL = result.Rest[i].URL
+			instance.Store_Image = result.Rest[i].ImageURL.ShopImage1
+			instance.Rest_Day = result.Rest[i].Holiday
+			instance.Area = result.Rest[i].Code.AreanameS
+			instance.Average_Money = result.Rest[i].Budget
+
+			res_store_data = append( res_store_data, instance )
+		}
+
+		json_byte, err := json.Marshal( res_store_data )
+
+		if err != nil {
+			logger.Write_log( "fail change json", 1 )
+			logger.Write_log( err.Error(), 1 )
+			fmt.Fprintf( w, "false")
+			return
+		}
+
+		var buf bytes.Buffer
+	
+		_ = json.Indent( &buf, json_byte, "", "  " )
+
+		responseResult := ResponseResult{
+			Status:    "OK",
+			Data:      map[string]interface{}{ "json": buf.String() },
+			ErrorText: "",
+		}
+
+		res, _ := json.Marshal( responseResult )
+
 		logger.Write_log( "store search success " + req.RemoteAddr, 1 )
+
+		util.Respond( res, w )
  	}
 }
