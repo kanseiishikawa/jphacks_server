@@ -13,13 +13,20 @@ import (
 )
 
 
-func PlanFileUpload( file *os.File, uploadname string ) error {
+func PlanFileUpload( uploadname string ) error {
 	sess, err := S3Connect()
 
 	if err != nil {
 		return err
 	}
+
+	file, err := os.Open( "send.json" )
+	defer file.Close()
 	
+	if err != nil {
+		return err
+	}
+
 	bucketname := "jphacksstorage"
 	
 	uploader := s3manager.NewUploader( sess )
@@ -28,6 +35,8 @@ func PlanFileUpload( file *os.File, uploadname string ) error {
 		Key: aws.String( uploadname ),
 		Body: file,
 	})
+
+	exec.Command( "rm", "-rf", "send.json" ).Run()
 
 	if err != nil {
 		return err

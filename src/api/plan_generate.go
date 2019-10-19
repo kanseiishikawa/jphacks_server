@@ -92,9 +92,10 @@ func Plan_Generate( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFun
 
 		file_name := plan_key + ".json"
 
-		var file *os.File
-		file.WriteString( plan_data )
-		err = util.PlanFileUpload( file, file_name )
+		file, _ := os.OpenFile("send.json", os.O_WRONLY|os.O_CREATE, 0666)
+		fmt.Fprintln( file, plan_data )
+		defer file.Close()
+		err = util.PlanFileUpload( file_name )
 
 		if err != nil {
 			logger.Write_log( "fail s3upload " + req.RemoteAddr, 1 )
