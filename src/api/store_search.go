@@ -6,7 +6,7 @@ import (
 	//"../database"
 	"../config"
 	"../jwt"
-	//"encoding/json"
+	"encoding/json"
 	"net/http"
 	//"bytes"
 	"fmt"
@@ -93,6 +93,16 @@ func Store_Search( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc
 			}
 		}
 
-		fmt.Fprintf( w, url_option )
+		result, err := ReturnStruct( url_option )
+
+		if err != nil {
+			logger.Write_log( "fail tap api", 1 )
+			logger.Write_log( err.Error(), 1 )
+			return
+		}
+
+		bytes, err := json.Marshal( result )
+		fmt.Fprintf( w, string( bytes ) )
+		logger.Write_log( "store search success " + req.RemoteAddr, 1 )
  	}
 }
