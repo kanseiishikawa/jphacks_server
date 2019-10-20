@@ -113,7 +113,7 @@ func Store_Search( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc
 			if err != nil {
 				for i := 0; i < len( area_result.GareaSmall ); i++ {
 					slice := strings.Split( area_result.GareaSmall[i].AreanameS, "・" )
-					fmt.Println( slice )
+					//fmt.Println( slice )
 					for r := 0; r < len( slice ); r++ {
 						if slice[r] == search_area {
 							url_option += "&areacode_s=" + area_result.GareaSmall[i].AreacodeS
