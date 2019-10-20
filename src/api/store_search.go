@@ -109,11 +109,11 @@ func Store_Search( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc
 		if len( req.FormValue( "area" ) ) != 0 {
 			search_area := req.FormValue( "area" )
 			area_result, err := AreaReturnStruct()
-
 			if err != nil {
+				fmt.Println( area_result )
 				for i := 0; i < len( area_result.GareaSmall ); i++ {
 					slice := strings.Split( area_result.GareaSmall[i].AreanameS, "・" )
-					//fmt.Println( slice )
+					fmt.Println( slice )
 					for r := 0; r < len( slice ); r++ {
 						if slice[r] == search_area {
 							url_option += "&areacode_s=" + area_result.GareaSmall[i].AreacodeS
@@ -128,6 +128,8 @@ func Store_Search( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc
 					}
 					
 				}
+			} else {
+				logger.Write_log( err.Error(), 1 )
 			}
 		}
 
