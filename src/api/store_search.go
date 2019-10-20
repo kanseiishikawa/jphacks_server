@@ -37,7 +37,7 @@ func Store_Search( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc
 		api_par := map[string]string{}
 
 		if len( req.FormValue( "freeword" ) ) != 0 {
-			api_par["freeword"] = value_go( req.FormValue( "freeword" ) )
+			api_par["freeword"] = req.FormValue( "freeword" )
 		} else {
 			api_par["freeword"] = "0"
 		}
