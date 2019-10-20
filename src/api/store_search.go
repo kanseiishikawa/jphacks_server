@@ -8,6 +8,7 @@ import (
 	"../jwt"
 	"encoding/json"
 	"net/http"
+	"strings"
 	"bytes"
 	"fmt"
 	//"os"
@@ -103,7 +104,34 @@ func Store_Search( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc
 			}
 		}
 
-		result, err := ReturnStruct( url_option )
+		search := false
+
+		if len( req.FormValue( "area" ) ) != 0 {
+			search_area := req.FormValue( "area" )
+			area_result, err := AreaReturnStruct()
+
+			if err != nil {
+				for i := 0; i < len( area_result.GareaSmall ); i++ {
+					slice := strings.Split( area_result.GareaSmall[i].AreanameS, "・" )
+
+					for r := 0; r < len( slice ); r++ {
+						if slice[r] == search_area {
+							url_option += "&areacode_s=" + area_result.GareaSmall[i].AreacodeS
+							search = true
+							logger.Write_log( "area check ok", 1 )
+							break
+						}
+					}
+
+					if search {
+						break
+					}
+					
+				}
+			}
+		}
+
+		result, err := StoreReturnStruct( url_option )
 
 		if err != nil {
 			logger.Write_log( "fail tap api", 1 )
