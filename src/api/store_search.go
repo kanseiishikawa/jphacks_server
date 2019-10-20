@@ -17,6 +17,7 @@ import (
 type Store_Data struct {
 	Store_Name string `json:"store_name"`
 	Category string `json:"category"`
+	Tel_Number string `json:"tel_number"`
 	URL string `json:"url"`
 	Store_Image string `json:"store_image"`
 	Rest_Day string `json:"rest_day"`
@@ -184,7 +185,7 @@ func Store_Search( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc
 			instance.Rest_Day = result.Rest[i].Holiday
 			instance.Area = result.Rest[i].Code.AreanameS
 			instance.Average_Money = result.Rest[i].Budget
-
+			instance.Tel_Number = result.Rest[i].Tel
 			res_store_data = append( res_store_data, instance )
 		}
 
