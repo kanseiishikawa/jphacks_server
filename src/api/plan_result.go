@@ -80,6 +80,20 @@ func Plan_Result( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc 
 			return			
 		}
 
+		if answer_count == 0 {
+			responseResult := ResponseResult{
+				Status:    "OK",
+				Data:      map[string]interface{}{ "count": 0 },
+				ErrorText: "",
+			}
+			
+			res, _ := json.Marshal( responseResult )
+			
+			logger.Write_log( "plan result form 0 " + req.RemoteAddr, 1 )
+			util.Respond( res, w )
+			return
+		}
+
 		plan_file_name := plan_key + ".json"
 		json_byte, err := util.FileDownload( plan_file_name )
 
