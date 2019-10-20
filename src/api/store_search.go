@@ -115,23 +115,27 @@ func Store_Search( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc
 			if err == nil {
 				for i := 0; i < len( area_result.GareaSmall ); i++ {
 					s_slice := strings.Split( area_result.GareaSmall[i].AreanameS, "・" )
-					
-					for r := 0; r < len( s_slice ); r++ {
-						if s_slice[r] == search_area {
-							url_option += "&areacode_s=" + area_result.GareaSmall[i].AreacodeS
+
+					if !search { 
+						for r := 0; r < len( s_slice ); r++ {
+							if s_slice[r] == search_area {
+								url_option += "&areacode_s=" + area_result.GareaSmall[i].AreacodeS
+								search = true
+								logger.Write_log( "area check ok", 1 )
+								break
+							}
+						}
+					}
+
+					if !search {
+						m_slice := area_result.GareaSmall[i].GareaMiddle.AreanameM
+
+						if m_slice == search_area {
+							url_option += "&areacode_m=" + area_result.GareaSmall[i].GareaMiddle.AreacodeM
 							search = true
 							logger.Write_log( "area check ok", 1 )
 							break
 						}
-					}
-
-					m_slice := area_result.GareaSmall[i].GareaMiddle.AreanameM
-
-					if m_slice == search_area {
-						url_option += "&areacode_m=" + area_result.GareaSmall[i].GareaMiddle.AreacodeM
-						search = true
-						logger.Write_log( "area check ok", 1 )
-						break
 					}
 
 
@@ -148,15 +152,17 @@ func Store_Search( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc
 						l_search_area = search_area + "県"
 					}
 
-					if area_result.GareaSmall[i].Pref.PrefName == l_search_area {
-						url_option += "&pref=" + area_result.GareaSmall[i].Pref.PrefCode
-						search = true
-						logger.Write_log( "area check ok", 1 )
-						break						
-					}
-					
-					if search {
-						break
+					if !search {
+						if area_result.GareaSmall[i].Pref.PrefName == l_search_area {
+							url_option += "&pref=" + area_result.GareaSmall[i].Pref.PrefCode
+							search = true
+							logger.Write_log( "area check ok", 1 )
+							break						
+						}
+						
+						if search {
+							break
+						}
 					}
 					
 				}
