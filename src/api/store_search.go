@@ -176,7 +176,16 @@ func Store_Search( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc
 		if err != nil {
 			logger.Write_log( "fail tap api", 1 )
 			logger.Write_log( err.Error(), 1 )
-			fmt.Fprintf( w, "false")
+			
+			responseResult := ResponseResult{
+				Status:    "No",
+				Data:      map[string]interface{}{},
+				ErrorText: "",
+			}
+
+			res, _ := json.Marshal( responseResult )
+			
+			util.Respond( res, w )
 			return
 		}
 
