@@ -110,7 +110,7 @@ func Store_Search( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc
 			search_area := req.FormValue( "area" )
 			area_result, err := AreaReturnStruct()
 			if err != nil {
-				fmt.Println( area_result.GareaSmall[0] )
+				//fmt.Println( area_result.GareaSmall[0] )
 				for i := 0; i < len( area_result.GareaSmall ); i++ {
 					slice := strings.Split( area_result.GareaSmall[i].AreanameS, "・" )
 					fmt.Println( slice )
