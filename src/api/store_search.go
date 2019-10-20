@@ -124,38 +124,36 @@ func Store_Search( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc
 						}
 					}
 
-					m_slice := strings.Split( area_result.GareaSmall[i].GareaMiddle.AreanameM, "・" )
+					m_slice := area_result.GareaSmall[i].GareaMiddle.AreanameM
 
-					for r := 0; r < len( m_slice ); r++ {
-						if m_slice[r] == search_area {
-							url_option += "&areacode_m=" + area_result.GareaSmall[i].GareaMiddle.AreacodeM
-							search = true
-							logger.Write_log( "area check ok", 1 )
-							break
-						}
+					if m_slice == search_area {
+						url_option += "&areacode_m=" + area_result.GareaSmall[i].GareaMiddle.AreacodeM
+						search = true
+						logger.Write_log( "area check ok", 1 )
+						break
 					}
 
-					l_slice := strings.Split( area_result.GareaSmall[i].GareaLarge.AreanameL, "・" )
-					
+
+					l_search_area := ""
 					if search_area == "東京" {
-						search_area += "都"
+						l_search_area = search_area + "都"
 					} else if search_area == "大阪" {
-						search_area  += "府"
+						l_search_area = search_area  + "府"
 					} else if search_area == "京都" {
-						search_area  += "府"
-					} else if search_area != "北海道" {
-						search_area += "県"
-					}
-					
-					for r := 0; r < len( l_slice ); r++ {
-						if l_slice[r] == search_area {
-							url_option += "&areacode_l=" + area_result.GareaSmall[i].GareaLarge.AreacodeL
-							search = true
-							logger.Write_log( "area check ok", 1 )
-							break
-						}						
+						l_search_area = search_area + "府"
+					} else if search_area == "北海道" {
+						l_search_area = search_area
+					} else {
+						l_search_area = search_area + "県"
 					}
 
+					if area_result.GareaSmall[i].Pref.PrefName == l_search_area {
+						url_option += "&pref=" + area_result.GareaSmall[i].Pref.PrefCode
+						search = true
+						logger.Write_log( "area check ok", 1 )
+						break						
+					}
+					
 					if search {
 						break
 					}
