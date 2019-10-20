@@ -36,61 +36,61 @@ func Store_Search( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc
 		api_par := map[string]string{}
 
 		if len( req.FormValue( "freeword" ) ) != 0 {
-			api_par["freeword"] = req.FormValue( "freeword" )
+			api_par["freeword"] = value_go( req.FormValue( "freeword" ) )
 		} else {
 			api_par["freeword"] = "0"
 		}
 		
 		if len( req.FormValue( "no_smorking" ) ) != 0 { 
-			api_par["no_smorking"] = req.FormValue( "no_smorking" )
+			api_par["no_smorking"] = value_go( req.FormValue( "no_smorking" ) )
 		} else {
 			api_par["no_smorking"] = "0"
 		}
 
 		if len( req.FormValue( "card" ) ) != 0  {
-			api_par["card"] = req.FormValue( "card" )
+			api_par["card"] = value_go( req.FormValue( "card" ) )
 		} else {
 			api_par["card"] = "0"
 		}
 
 		if len( req.FormValue( "bottomless_cup" ) ) != 0 {
-			api_par["bottomless_cup"] = req.FormValue( "bottomless_cup" )
+			api_par["bottomless_cup"] = value_go( req.FormValue( "bottomless_cup" ) )
 		} else {
 			api_par["bottomless_cup"] = "0"
 		}
 
 		if len( req.FormValue( "buffet" ) ) != 0 {
-			api_par["buffet"] = req.FormValue( "buffet" )
+			api_par["buffet"] = value_go( req.FormValue( "buffet" ) )
 		} else {
 			api_par["buffet"] = "0"
 		}
 
 		if len( req.FormValue( "private_room" ) ) != 0 {
-			api_par["private_room"] = req.FormValue( "private_room" )
+			api_par["private_room"] = value_go( req.FormValue( "private_room" ) )
 		} else {
 			api_par["private_room"] = "0"
 		}
 
 		if len( req.FormValue( "midnight") ) != 0 {
-			api_par["midnight"] = req.FormValue( "midnight" )
+			api_par["midnight"] = value_go( req.FormValue( "midnight" ) )
 		} else {
 			api_par["midnight"] = "0"
 		}
 
 		if len( req.FormValue( "wifi") ) != 0 {
-			api_par["wifi"] = req.FormValue( "wifi" )
+			api_par["wifi"] = value_go( req.FormValue( "wifi" ) )
 		} else {
 			api_par["wifi"] = "0"
 		}
 
 		if len( req.FormValue( "projecter_screen" ) ) != 0 {
-			api_par["projecter_screen"] = req.FormValue( "projecter_screen" )
+			api_par["projecter_screen"] = value_go( req.FormValue( "projecter_screen" ) )
 		} else {
 			api_par["projecter_screen"] = "0"
 		}
 
 		if len( req.FormValue( "web_reserve" ) ) != 0 {
-			api_par["web_reserve"] = req.FormValue( "web_reserve" )
+			api_par["web_reserve"] = value_go( req.FormValue( "web_reserve" ) )
 		} else {
 			api_par["web_reserve"] = "0"
 		}
@@ -152,4 +152,12 @@ func Store_Search( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc
 
 		util.Respond( res, w )
  	}
+}
+
+func value_go( bool_value string ) string {
+	if bool_value == "false" {
+		return "0"
+	} else {
+		return "1"
+	}
 }
