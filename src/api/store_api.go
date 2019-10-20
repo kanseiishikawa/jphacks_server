@@ -12,7 +12,7 @@ import (
 
 const (
     STOREURL     = "https://api.gnavi.co.jp/RestSearchAPI/v3/"
-	AREAEURL     = "https://api.gnavi.co.jp/master/GAreaSmallSearchAPI/v3/"
+	AREAURL     = "https://api.gnavi.co.jp/master/GAreaSmallSearchAPI/v3/"
     CONSUMER_KEY = "e33d36e16e80413abfaf5caa66d49e66"
 )
 
