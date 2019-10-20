@@ -109,7 +109,8 @@ func Store_Search( conf config.Connect_data, keys *jwt.JWTKeys) http.HandlerFunc
 		if len( req.FormValue( "area" ) ) != 0 {
 			search_area := req.FormValue( "area" )
 			area_result, err := AreaReturnStruct()
-			fmt.Println( "1" )
+			fmt.Println( err )
+			fmt.Println( area_result )
 			if err != nil {
 				fmt.Println( "2" )
 				//fmt.Println( area_result.GareaSmall[0] )
